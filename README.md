@@ -106,7 +106,13 @@ Start the deployment, and if all goes well you should see two containers are run
 
 <img src="images/pods.png" alt="pods.png" width="600"/>
 
+If both containers comeup, you should be able to tail the log of the stunnel container using a command like this:
 
+```
+      $ kubectl logs -f streamsets-deployment-<pod id> -c stunnel
+```
+
+<img src="images/stunnel_log.png" alt="stunnel_log.png" width="600"/>
 
 
 
