@@ -116,9 +116,13 @@ If both containers come up, you can tail the log of the stunnel container using 
 
 
 ### Step 7 - Connect to Redis!
-Connect to Redis using the URL <code>redis://localhost:6379</code>,like this:
+Connect to Redis using the URL <code>redis://localhost:6379</code>, like this:
 
 <img src="images/redis.png" alt="redis.png" width="400"/>
 
+Confirm that the pipeline runs correctly:
 
+<img src="images/success.png" alt="success.png" width="400"/>
+
+ 
 
