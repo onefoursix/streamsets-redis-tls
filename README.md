@@ -3,7 +3,7 @@ This project provides an example of how to add TLS support for [Redis](https://r
 
 This workaround won't be necessary once StreamSets Engine v6.3 ships, as that version will include native TLS suport for Redis. In the meantime, this example may come in handy, and also serves as an example of how to deploy [sidecar containers](https://kubernetes.io/docs/concepts/workloads/pods/sidecar-containers/) alongside StreamSets engines when deploying on Kubernetes.
 
-Stunnel is a proxy that adds TLS encryption support for unencrypted clients. There are many examples online of using stunnel with Redis, such as [this one](https://redis.io/blog/stunnel-secure-redis-ssl/)  and [this one](https://www.digitalocean.com/community/tutorials/how-to-connect-to-managed-redis-over-tls-with-stunnel-and-redis-cli). With stunnel in place, StreamSets' Redis connectors connect to a stunnel server which handles interaction with the backend Redis server using TLS..  
+Stunnel is a proxy that adds TLS encryption support for unencrypted clients. There are many examples online of using stunnel with Redis, such as [this one](https://redis.io/blog/stunnel-secure-redis-ssl/)  and [this one](https://www.digitalocean.com/community/tutorials/how-to-connect-to-managed-redis-over-tls-with-stunnel-and-redis-cli). With stunnel in place, StreamSets' Redis connectors connect to a stunnel server which handles interaction with the backend Redis server using TLS.  
 
 ### Deployment Options
 For standalone StreamSets deployments, one can simply install stunnel on any available machine (including, for example, the same machine the StreamSets engine is on).
@@ -102,7 +102,7 @@ Import the edited deployment yaml back into the StreamSets Deployment UI and sav
 
 
 ### Step 6 - Start the Deployment
-Start the deployment, and if all goes well you should see two containers are running in your engine pod, like this:
+Start the deployment, and if all goes well, you should see two containers are running in your engine pod, like this:
 
 <img src="images/pods.png" alt="pods.png" width="600"/>
 
@@ -116,7 +116,7 @@ If both containers come up, you can tail the log of the stunnel container using 
 
 
 ### Step 7 - Connect to Redis!
-Connect to Redis using the URL <code>redis://localhost:6379</code>, like this:
+Connect to Redis using the URL <code>redis://localhost:6379</code>. The hostname <code>localhost</code> works because it is shared by both conatiners within the pod.
 
 <img src="images/redis.png" alt="redis.png" width="400"/>
 
