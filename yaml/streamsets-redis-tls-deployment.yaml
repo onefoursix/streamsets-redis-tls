@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: streamsets-deployment-<your-deployment-id>
+    vendor: streamsets-sch
+    env: na01
+  name: streamsets-deployment-<your-deployment-id>
+  namespace: ns1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamsets-deployment-<your-deployment-id>
+  template:
+    metadata:
+      labels:
+        app: streamsets-deployment-<your-deployment-id>
+        vendor: streamsets-sch
+        env: na01
+    spec:
+      containers:
+        - env:
+            - name: STREAMSETS_DEPLOYMENT_ID
+              value: <your-deployment-id>:<your-org-id>
+            - name: STREAMSETS_DEPLOYMENT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: token
+                  name: streamsets-deployment-secret-<your-deployment-id>
+                  optional: false
+            - name: STREAMSETS_DEPLOYMENT_SCH_URL
+              value: <your-Control-Hub-URL>
+          image: streamsets/datacollector:JDK17_6.1.1
+          livenessProbe:
+            failureThreshold: 20
+            httpGet:
+              path: /public-rest/ping
+              port: engine-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+          name: streamsets-engine-<your-deployment-id>
+          ports:
+            - containerPort: 18630
+              name: engine-port
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: "1"
+          startupProbe:
+            failureThreshold: 60
+            httpGet:
+              path: /public-rest/ping
+              port: engine-port
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+        - name: stunnel
+          image: <your-stunnel-container-id>
+          volumeMounts:
+            - name: stunnel-config
+              mountPath: /etc/stunnel/stunnel.conf
+              subPath: stunnel.conf
+            - name: client-certs
+              mountPath: /etc/stunnel/tls
+          ports:
+            - containerPort: 6379
+      volumes:
+        - name: stunnel-config
+          configMap:
+            name: stunnel-config
+        - name: client-certs
+          secret:
+            secretName: client-certs
+            items:
+            - key: client.crt
+              path: client.crt
+            - key: client.key
+              path: client.key
+      dnsPolicy: Default
