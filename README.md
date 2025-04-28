@@ -116,7 +116,7 @@ If both containers come up, you can tail the log of the stunnel container using 
 
 
 ### Step 7 - Connect to Redis!
-Connect to Redis using the URL <code>redis://localhost:6379</code>. The hostname <code>localhost</code> works because it is shared by both conatiners within the pod.
+Connect to Redis using the URL <code>redis://localhost:6379</code>. The hostname <code>localhost</code> works because it is shared by both containers within the pod.
 
 <img src="images/redis.png" alt="redis.png" width="400"/>
 
