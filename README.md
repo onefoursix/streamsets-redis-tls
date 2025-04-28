@@ -55,8 +55,53 @@ $ kubectl create secret generic client-certs \
  --from-file=client.key
 ```
 
-### Step 5 - Create a StreamSets Kubernetes Deployment 
-Create a StreamSets [Kubernetes Deployment](https://www.ibm.com/docs/en/streamsets-controlhub?topic=deployments-kubernetes) and set the Advanced Mode checkbox in the Kubernetes Deployment config so that you can edit the deployment's yaml directly.  Download the generated yaml and make the following changes in a developer-friendly text editor (and refer to the complete example yaml [here](yaml/streamsets-redis-tls-deployment.yaml))
+### Step 5 - Create a StreamSets Kubernetes Deployment with a stunnel sidecar container
+Create a StreamSets [Kubernetes Deployment](https://www.ibm.com/docs/en/streamsets-controlhub?topic=deployments-kubernetes) and set the Advanced Mode checkbox in the Kubernetes Deployment config so you can edit the deployment's yaml directly.  Download the generated yaml and make the following changes in a developer-friendly text editor.  You can refer to a complete example yaml [here](yaml/streamsets-redis-tls-deployment.yaml).
+
+- Add a stunnel container to the manifest as a peer to the StreamSets engine container.  The stunnel container should reference your stunnel image and include VolumeMounts for the stunnel config file from the ConfigMap and the client TLS cert and key from the Secret.  Here is a snippet of my stunnel container entry:
+
+```
+        - name: stunnel
+          image: onefoursix/stunnel:1.0
+          volumeMounts:
+            - name: stunnel-config
+              mountPath: /etc/stunnel/stunnel.conf
+              subPath: stunnel.conf
+            - name: client-certs
+              mountPath: /etc/stunnel/tls
+          ports:
+            - containerPort: 6379
+```
+
+- Add Volumes for the ConfigMap and Secret:
+
+```
+      volumes:
+        - name: stunnel-config
+          configMap:
+            name: stunnel-config
+        - name: client-certs
+          secret:
+            secretName: client-certs
+            items:
+            - key: client.crt
+              path: client.crt
+            - key: client.key
+              path: client.key
+```
+
+- Add this line so DNS is correctly resolved:
+
+```
+      dnsPolicy: ClusterFirst
+```
+
+Once again, refer to the example yaml [here](yaml/streamsets-redis-tls-deployment.yaml).
+
+Import the edited deployment yaml back into the StreamSets Deployment UI and save the deployment.
+
+
+
 
 
 
