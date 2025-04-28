@@ -56,7 +56,7 @@ $ kubectl create secret generic client-certs \
 ```
 
 ### Step 5 - Create a StreamSets Kubernetes Deployment 
-Create a StreamSets [Kubernetes Deployment](https://www.ibm.com/docs/en/streamsets-controlhub?topic=deployments-kubernetes) and set the Advanced Mode checkbox in the Kubernetes Deployment config so that you can edit the deployment's yaml directly.  Download the generated yaml and make the following changes in a developer-friendly text editor (and refer to the complete example yaml [here](yaml/streamsets-redis-tls.yaml))
+Create a StreamSets [Kubernetes Deployment](https://www.ibm.com/docs/en/streamsets-controlhub?topic=deployments-kubernetes) and set the Advanced Mode checkbox in the Kubernetes Deployment config so that you can edit the deployment's yaml directly.  Download the generated yaml and make the following changes in a developer-friendly text editor (and refer to the complete example yaml [here](yaml/streamsets-redis-tls-deployment.yaml))
 
 
 
