@@ -101,6 +101,10 @@ Once again, refer to the example yaml [here](yaml/streamsets-redis-tls-deploymen
 Import the edited deployment yaml back into the StreamSets Deployment UI and save the deployment.
 
 
+### Step 6 - Start the Deployment
+Start the deployment, and if all goes well you should see two containers are running in your engine pod, like this:
+
+<img src="images/pods.png" alt="pods.png" width="600"/>
 
 
 
