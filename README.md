@@ -13,10 +13,12 @@ For Kubernetes-based deployments, one can deploy stunnel as a sidecar container 
 ### Step 1 - Create and publish a stunnel Docker image
 Create and publish a Docker container with stunnel installed.  An example Dockerfile is [here](docker/Dockerfile).
 
-### Step 2 - Same a stunnel conf file in a ConfigMap.
-An example stunnel.conf file is [here](stunnel-conf/stunnel.conf)
+### Step 2 - Create a stunnel conf file.
+An example <code>stunnel.conf</code> file template is [here](stunnel-conf/stunnel.conf). 
 
+Here is the <code>stunnel.conf</code> file I used in my environment, with Redis running on the host <code>crusher.onefoursix.com</code> with a TLS port of <code>6380</code>. Stunnel is configured to accept calls from StreamSets on port <code>6379</code>. I did not set a <code>CAfile</code> in my config because my Redis server has a cert signed by a well-known CA, and I included a client cert and key trusted by Redis for mTLS.  Note that the config includes <code>foreground = yes</code> as the stunnel process serves as the Docker entrypoint:.
 
+```
 # stunnel.conf
 debug = 7
 output = /var/log/stunnel4/stunnel.log
@@ -32,3 +34,29 @@ accept = 6379
 connect = crusher.onefoursix.com:6380
 cert = /etc/stunnel/tls/client.crt
 key = /etc/stunnel/tls/client.key
+```
+
+
+### Step 3 - Save the <code>stunnel.conf</code> file in a ConfigMap.
+Execute a command like this to save the <code>stunnel.conf</code> file in a ConfigMap:
+
+```$ kubectl create configmap stunnel-config --from-file=stunnel.conf=./stunnel.conf```
+
+### Step 4 - If mTLS is required, create a client cert and key and store them in a secret.
+If mTLS is required, create or obtain a client cert and key that stunnel will use to authenticate to Redis.
+
+
+Execute a command like this to save the client cert and key in a Secret:
+
+
+```
+$ kubectl create secret generic client-certs \
+ --from-file=client.crt \
+ --from-file=client.key
+```
+
+### Step 5 - Create a StreamSets Kubernetes Deployment 
+Create a StreamSets [Kubernetes Deployment](https://www.ibm.com/docs/en/streamsets-controlhub?topic=deployments-kubernetes) and set the Advanced Mode checkbox in the Kubernetes Deployment config, which allow you to edit the deployment's yaml directly.
+
+
+
