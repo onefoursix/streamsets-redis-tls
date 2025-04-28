@@ -106,13 +106,19 @@ Start the deployment, and if all goes well you should see two containers are run
 
 <img src="images/pods.png" alt="pods.png" width="600"/>
 
-If both containers come up, you should be able to tail the log of the stunnel container using a command like this:
+If both containers come up, you can tail the log of the stunnel container using a command like this:
 
 ```
       $ kubectl logs -f streamsets-deployment-<pod id> -c stunnel
 ```
 
 <img src="images/stunnel_log.png" alt="stunnel_log.png" width="800"/>
+
+
+### Step 7 - Connect to Redis!
+Connect to Redis using the URL <code>redis://localhost:6379</code>,like this:
+
+<img src="images/redis.png" alt="redis.png" width="800"/>
 
 
 
