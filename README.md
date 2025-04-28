@@ -62,7 +62,7 @@ Create a StreamSets [Kubernetes Deployment](https://www.ibm.com/docs/en/streamse
 
 ```
         - name: stunnel
-          image: onefoursix/stunnel:1.0
+          image: onefoursix/stunnel:7.0
           volumeMounts:
             - name: stunnel-config
               mountPath: /etc/stunnel/stunnel.conf
