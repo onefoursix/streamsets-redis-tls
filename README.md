@@ -11,7 +11,7 @@ For standalone StreamSets deployments, one can simply install stunnel on any ava
 For Kubernetes-based deployments, one can deploy stunnel as a sidecar container alongside a StreamSets engine.  This is the approach described in this example.
 
 ### Step 1 - Create and publish a stunnel Docker image
-Create and publish a Docker container with stunnel installed.  An example Dockerfile is [here](docker/Dockerfile).
+Create and publish a Docker image that includes stunnel.  An example Dockerfile is [here](docker/Dockerfile).
 
 ### Step 2 - Create a stunnel conf file.
 An example <code>stunnel.conf</code> file template is [here](stunnel-conf/stunnel.conf). 
