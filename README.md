@@ -124,5 +124,9 @@ Confirm that the pipeline runs correctly:
 
 <img src="images/success.png" alt="success.png" width="400"/>
 
+We can see in stunnel's log that a TLS connection to Redis was established:
+
+
+<img src="images/tls.png" alt="tls.png" width="800"/>
  
 
