@@ -80,4 +80,4 @@ spec:
               path: client.crt
             - key: client.key
               path: client.key
-      dnsPolicy: Default
+      dnsPolicy: ClusterFirst
